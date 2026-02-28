@@ -1,53 +1,239 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Calculator</title>
-    <link rel="stylesheet" href="style.css">
-    <!-- <link rel="stylesheet" href="woodCalc.css"> -->
-    <script src="script.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LPH Calculator</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f0f4f8;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      padding: 30px 16px;
+    }
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      padding: 32px;
+      width: 100%;
+      max-width: 560px;
+    }
+    h1 {
+      font-size: 1.5rem;
+      color: #1a202c;
+      margin-bottom: 4px;
+    }
+    .subtitle {
+      font-size: 0.875rem;
+      color: #718096;
+      margin-bottom: 28px;
+    }
+    .formula-box {
+      background: #ebf8ff;
+      border-left: 4px solid #3182ce;
+      border-radius: 6px;
+      padding: 12px 16px;
+      margin-bottom: 28px;
+      font-size: 0.9rem;
+      color: #2b6cb0;
+      font-family: monospace;
+    }
+    label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #4a5568;
+      margin-bottom: 4px;
+    }
+    .hint {
+      font-size: 0.78rem;
+      color: #a0aec0;
+      margin-bottom: 6px;
+      font-weight: 400;
+    }
+    input[type="number"] {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid #cbd5e0;
+      border-radius: 8px;
+      font-size: 1rem;
+      color: #2d3748;
+      background: #f7fafc;
+      transition: border-color 0.2s;
+      margin-bottom: 18px;
+    }
+    input[type="number"]:focus {
+      outline: none;
+      border-color: #3182ce;
+      background: #fff;
+    }
+    .btn {
+      width: 100%;
+      padding: 12px;
+      background: #3182ce;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-top: 4px;
+    }
+    .btn:hover { background: #2b6cb0; }
+    .btn-reset {
+      width: 100%;
+      padding: 10px;
+      background: transparent;
+      color: #718096;
+      border: 1px solid #cbd5e0;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: background 0.2s;
+    }
+    .btn-reset:hover { background: #f7fafc; }
+    .result-box {
+      display: none;
+      margin-top: 24px;
+      background: #f0fff4;
+      border: 1px solid #9ae6b4;
+      border-radius: 10px;
+      padding: 20px 24px;
+    }
+    .result-box.error {
+      background: #fff5f5;
+      border-color: #fc8181;
+    }
+    .result-label {
+      font-size: 0.85rem;
+      color: #276749;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .result-label.error { color: #c53030; }
+    .result-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #22543d;
+    }
+    .result-value.error { font-size: 1rem; color: #c53030; }
+    .breakdown {
+      margin-top: 14px;
+      font-size: 0.82rem;
+      color: #4a5568;
+      border-top: 1px solid #c6f6d5;
+      padding-top: 12px;
+    }
+    .breakdown-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 3px 0;
+    }
+    .breakdown-row span:last-child { font-weight: 600; color: #2d3748; }
+  </style>
 </head>
 <body>
-    <h1>Calculator</h1>
-    <div class="container">
-        <form name="form">
-            <input class="textview" name="textview">
-        </form>
-            <table>
-                <tr>
-                        <td><input class="allclearButton" type="button" value="AC" onclick="clean()"></td>
-                        <td><input class="button" type="button" value="C" onclick="back()"></td>
-                        <td><input class="button" type="button" value="/" onclick="insert('/')"></td>
-                        <td><input class="button" type="button" value="x" onclick="insert('*')"></td>
-                </tr>
-                <tr>
-                        <td><input class="button" type="button" value="7" onclick="insert(7)"></td>
-                        <td><input class="button" type="button" value="8" onclick="insert(8)"></td>
-                        <td><input class="button" type="button" value="9" onclick="insert(9)"></td>
-                        <td><input class="button" type="button" value="-" onclick="insert('-')"></td>
-                 </tr>
-                 <tr>
-                        <td><input class="button"  type="button" value="4" onclick=insert(4)></td>
-                        <td><input class="button" type="button" value="5" onclick=insert(5)></td>
-                        <td><input class="button" type="button" value="6" onclick="insert(6)"></td>
-                        <td><input class="button" type="button" value="+" onclick="insert('+')"></td>
-                </tr>
-                 <tr>
-                        <td><input class="button" type="button" value="1" onclick="insert(1)"></td>
-                        <td><input class="button" type="button" value="2" onclick="insert(2)"></td>
-                        <td><input class="button" type="button" value="3" onclick="insert(3)"></td>
-                        <td rowspan="5"><input class="equalButton" type="button" value="=" onclick=equals()></td>
-              </tr>
-                <tr>
-                        <td><input class="button" type="button" value="%" onclick="insert('%')"></td>
-                        <td><input class="button" type="button" value="0" onclick="insert(0)"></td>
-                        <td><input class="button" type="button" value="." onclick="insert('.')"></td>
-                        
-                </tr>
+  <div class="card">
+    <h1>⚙️ LPH Calculator</h1>
+    <p class="subtitle">Lost Productivity Hours — Amazon Fulfillment Center</p>
 
-            </table>
+    <div class="formula-box">
+      LPH = (AT × DH × UC) / PUPH
     </div>
+
+    <label for="at">Average Throughput (AT)
+      <span class="hint">Units per hour from OEE data, measured just before the fault</span>
+    </label>
+    <input type="number" id="at" placeholder="e.g. 500" min="0" step="any" />
+
+    <label for="dh">Downtime Hours (DH)
+      <span class="hint">Unplanned stop duration in hours (from OEE data)</span>
+    </label>
+    <input type="number" id="dh" placeholder="e.g. 1.5" min="0" step="any" />
+
+    <label for="uc">Units per Container (UC)
+      <span class="hint">Average units per tote, tray, or box for this process</span>
+    </label>
+    <input type="number" id="uc" placeholder="e.g. 10" min="0" step="any" />
+
+    <label for="puph">Process UPH (PUPH)
+      <span class="hint">Average items one associate produces per hour in this process</span>
+    </label>
+    <input type="number" id="puph" placeholder="e.g. 200" min="0" step="any" />
+
+    <button class="btn" onclick="calculate()">Calculate LPH</button>
+    <button class="btn-reset" onclick="resetForm()">Reset</button>
+
+    <div class="result-box" id="resultBox">
+      <div class="result-label" id="resultLabel">Lost Productivity Hours (LPH)</div>
+      <div class="result-value" id="resultValue"></div>
+      <div class="breakdown" id="breakdown"></div>
+    </div>
+  </div>
+
+  <script>
+    function calculate() {
+      const at = parseFloat(document.getElementById('at').value);
+      const dh = parseFloat(document.getElementById('dh').value);
+      const uc = parseFloat(document.getElementById('uc').value);
+      const puph = parseFloat(document.getElementById('puph').value);
+
+      const box = document.getElementById('resultBox');
+      const label = document.getElementById('resultLabel');
+      const val = document.getElementById('resultValue');
+      const breakdown = document.getElementById('breakdown');
+
+      box.style.display = 'block';
+
+      if (isNaN(at) || isNaN(dh) || isNaN(uc) || isNaN(puph)) {
+        box.className = 'result-box error';
+        label.className = 'result-label error';
+        label.textContent = 'Input Error';
+        val.className = 'result-value error';
+        val.textContent = 'Please fill in all four fields.';
+        breakdown.innerHTML = '';
+        return;
+      }
+
+      if (puph === 0) {
+        box.className = 'result-box error';
+        label.className = 'result-label error';
+        label.textContent = 'Input Error';
+        val.className = 'result-value error';
+        val.textContent = 'PUPH cannot be zero (division by zero).';
+        breakdown.innerHTML = '';
+        return;
+      }
+
+      const lph = (at * dh * uc) / puph;
+      const volumeLoss = at * dh;
+
+      box.className = 'result-box';
+      label.className = 'result-label';
+      label.textContent = 'Lost Productivity Hours (LPH)';
+      val.className = 'result-value';
+      val.textContent = lph.toFixed(2) + ' hrs';
+
+      breakdown.innerHTML = `
+        <div class="breakdown-row"><span>AT × DH (Volume Loss)</span><span>${volumeLoss.toLocaleString()} units</span></div>
+        <div class="breakdown-row"><span>Volume Loss × UC</span><span>${(volumeLoss * uc).toLocaleString()} units</span></div>
+        <div class="breakdown-row"><span>÷ PUPH</span><span>${puph.toLocaleString()} units/hr</span></div>
+        <div class="breakdown-row"><span><strong>LPH Result</strong></span><span><strong>${lph.toFixed(2)} hrs</strong></span></div>
+      `;
+    }
+
+    function resetForm() {
+      ['at', 'dh', 'uc', 'puph'].forEach(id => document.getElementById(id).value = '');
+      const box = document.getElementById('resultBox');
+      box.style.display = 'none';
+    }
+  </script>
 </body>
 </html>
